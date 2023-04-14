@@ -1,5 +1,5 @@
 CFLAGS = -Wall -Wextra -g
-EXEC = workfile main
+EXEC = workfile main commit.o
 
 all: $(EXEC)
 
@@ -24,6 +24,9 @@ main.o: main.c
 	
 workfile.o: workfile.c
 	gcc $(CFLAGS) -c workfile.c
+	
+commit.o: commit.c
+	gcc $(CFLAGS) -c commit.c
 
 clean:
 	rm -f *.o *~ $(PROGRAMS)
