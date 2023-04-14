@@ -5,6 +5,7 @@
 #include "hashlib.h"
 #include "gitlib.h"
 #include "clist.h"
+#include "hashlib.h"
 
 List* listdir(char* root_dir) {
 	List* l = initList();
@@ -50,16 +51,6 @@ void cp(char* to, char* from) {
 			fputs(line, fto);
 		}
 	}
-}
-
-char* hashToPath(char* file) {
-	if (file_exists(file)) {
-		char* hash = sha256file(file);
-		char* path = malloc(65 * sizeof(char));
-		sprintf(path, "%c%c/%s", hash[0], hash[1], hash+2);
-		return path;
-	}
-	return "file doesnt exist";
 }
 
 void blobFile(char* file) {
