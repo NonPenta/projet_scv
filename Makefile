@@ -1,15 +1,11 @@
 CFLAGS = -Wall -Wextra -g
-EXEC = workfile main commit.o
+EXEC = main
 
 all: $(EXEC)
 
-main: gitlib.o main.o hashlib.o clist.o
+main: gitlib.o main.o hashlib.o clist.o workfile.o
 	gcc -o $@ $(CFLAGS) $^
 	
-	
-workfile: workfile.o hashlib.o
-	gcc -o $@ $(CFLAGS) $^
-
 clist.o: clist.c
 	gcc $(CFLAGS) -c clist.c
 	
