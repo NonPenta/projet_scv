@@ -55,10 +55,18 @@ void cp(char* to, char* from) {
 
 void blobFile(char* file) {
 	if (file_exists(file)) {
-		char* path = hashToPath(file);
-		char command[9];
-		sprintf(command, "mkdir %c%c", path[0], path[1]);
-		system(command);
+		char* hash = sha256file(file);
+
+		char* dir = strdup(hash); dir[2] = '\0';
+		char* path = hashToPath(hash);
+
+		if (!file_exists(dir)) {
+			char command[9];
+			sprintf(command, "mkdir %c%c", path[0], path[1]);
+			system(command);
+		}
+
+		free(dir);
 		cp(path, file);
 	}
 }
