@@ -7,7 +7,7 @@ main: gitlib.o main.o hashlib.o clist.o
 	gcc -o $@ $(CFLAGS) $^
 	
 	
-workfile: workfile.o
+workfile: workfile.o hashlib.o
 	gcc -o $@ $(CFLAGS) $^
 
 clist.o: clist.c
