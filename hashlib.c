@@ -31,12 +31,8 @@ char* sha256file(char* file) {
 	return hash;
 }
 
-char* hashToPath(char* file) {
-	if (file_exists(file)) {
-		char* hash = sha256file(file);
-		char* path = malloc(65 * sizeof(char));
-		sprintf(path, "%c%c/%s", hash[0], hash[1], hash+2);
-		return path;
-	}
-	return "file doesnt exist";
+char* hashToPath(char* hash) {
+	char* path = malloc(65 * sizeof(char));
+	sprintf(path, "%c%c/%s", hash[0], hash[1], hash+2);
+	return path;
 }
