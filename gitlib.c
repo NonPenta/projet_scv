@@ -5,7 +5,6 @@
 #include "hashlib.h"
 #include "gitlib.h"
 #include "clist.h"
-#include "hashlib.h"
 
 List* listdir(char* root_dir) {
 	List* l = initList();
