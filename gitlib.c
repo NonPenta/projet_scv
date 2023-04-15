@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "hashlib.h"
 #include "gitlib.h"
 #include "clist.h"
@@ -68,4 +71,28 @@ void blobFile(char* file) {
 		free(dir);
 		cp(path, file);
 	}
+}
+
+int getChmod(const char* path) {
+	struct stat ret;
+	if (stat(path, &ret) == -1) {
+		return -1;
+	}
+	return 	(ret.st_mode &S_IRUSR)|(ret.st_mode &S_IWUSR)|(ret.st_mode &S_IXUSR)|/* owner*/
+				(ret.st_mode &S_IRGRP)|(ret.st_mode &S_IWGRP)|(ret.st_mode &S_IXGRP)|/* group*/
+				(ret.st_mode &S_IROTH)|(ret.st_mode &S_IWOTH)|(ret.st_mode &S_IXOTH);/* other*/
+}
+
+char* concat_paths(char* p1, char* p2) {
+	char* res = malloc(strlen(p1) + strlen(p2) + 1);
+
+	sprintf(res, "%s/%s", p1, p2);
+	return res;
+}
+
+int isFile(const char *path)
+{
+    struct stat path_stat;
+    stat(path, &path_stat);
+    return S_ISREG(path_stat.st_mode);
 }
