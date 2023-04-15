@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "commit.h"
 #include "hashlib.h"
+#include "gitlib.h"
 
 kvp* createKeyVal(char* key, char* val) {
 	kvp* kv = (kvp*) malloc(sizeof(kvp));
@@ -141,6 +142,21 @@ Commit* ftc(char* file){
 	fclose(f);
 	
 	return c;
+}
+
+char* blobCommit(Commit* c) {
+	char fname[14] = "/tmp/coXXXXXX";
+	mkstemp(fname);
+	ctf(c, fname);
+	char* hash = sha256file(fname);
+	char* cbf = hashToFile(hash);
+	cbf = realloc(cbf, 67);
+	strcat(cbf, ".t");
+	cp(cbf, fname);
+	char rm[17] = "rm ";
+	strcat(rm, fname);
+	system(rm);
+	return hash;
 }
 
 

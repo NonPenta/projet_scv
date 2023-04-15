@@ -28,5 +28,6 @@ char* cts(Commit* c);
 Commit* stc(char* str);
 void ctf(Commit* c, char* file);
 Commit* ftc(char* file);
+char* blobCommit(Commit* c);
 
 #endif
