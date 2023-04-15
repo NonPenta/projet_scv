@@ -15,12 +15,13 @@ WorkFile* createWorkFile(char* name) {
 }
 
 char* wfts(WorkFile* wf) {
-	char* hash;
+	char* hash = NULL;
 	if (wf->hash != NULL) {
 		hash = strdup(wf->hash);
 	} 
-	char* wfts = (char*) malloc((6 + strlen(wf->name) + strlen(hash)) * sizeof(char));
+	char* wfts = (char*) malloc((6 + strlen(wf->name) + 64) * sizeof(char));
 	sprintf(wfts, "%s\t%s\t%d\n", wf->name, wf->hash, wf->mode);
+	free(hash);
 	return wfts;
 	
 }
@@ -82,12 +83,13 @@ int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode){
 
 char* wtts(WorkTree* wt) {
 	char* wtts = (char*) malloc(1 + wt->n * 2006 * sizeof(char));
+	wtts[0] = '\0';
 	for(int i = 0; i < wt->n; i++) {
 		char* temp = wfts(wt->tab + i);
 		strcat(wtts, temp);
 		free(temp);
 	}
-	
+
 	return wtts;
 }
 
@@ -157,8 +159,12 @@ char* blobWorkTree(WorkTree* wt) {
 	wttf(wt, fname);
 	char* hash = sha256file(fname);
 	char* wtbf = hashToFile(hash);
+	wtbf = realloc(wtbf, 67);
 	strcat(wtbf, ".t");
 	cp(wtbf, fname);
+	char rm[17] = "rm ";
+	strcat(rm, fname);
+	system(rm);
 	return hash;
 }
 
