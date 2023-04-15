@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "commit.h"
+#include "hashlib.h"
 
 kvp* createKeyVal(char* key, char* val) {
 	kvp* kv = (kvp*) malloc(sizeof(kvp));
@@ -42,6 +43,21 @@ Commit* initCommit() {
 	c->n = 0;
 	
 	return c;
+}
+
+void commitSet(Commit* c, char* key, char* value){
+	
+	if (c->n >= c->size) {
+		printf("Erreur: la taille max du commit est atteinte");
+		return;
+	}
+	int p = (int) (djb2(key) % c->size);
+	while (c->T[p] != NULL) {
+		p = (p+1) % c->size;
+	}
+	
+	c->T[p] = createKeyVal(key, value);
+	c->n++;
 }
 
 
