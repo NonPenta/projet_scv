@@ -26,5 +26,7 @@ Commit* createCommit(char* hash);
 char* commitGet(Commit* c, char* key);
 char* cts(Commit* c);
 Commit* stc(char* str);
+void ctf(Commit* c, char* file);
+Commit* ftc(char* file);
 
 #endif

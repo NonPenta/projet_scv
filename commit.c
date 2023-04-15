@@ -107,4 +107,40 @@ Commit* stc(char* str) {;
 	
 }
 
+void ctf(Commit* c, char* file){
+	FILE* f = fopen(file, "w");
+	if (f != NULL) {
+		fprintf(f, "%s", cts(c));
+		fclose(f);
+	} else {
+		printf("Erreur lors de la création du fichier %s.\n", file);
+	}
+}
+
+Commit* ftc(char* file){
+	FILE* f = fopen(file, "r");
+	if (f == NULL) {
+		printf("Erreur lors de l'ouverture du fichier %s.\n", file);
+		return NULL;
+	}
+	
+	Commit* c = initCommit();
+	
+	char* buffer = (char*) malloc(200 * sizeof(char));
+	
+	while(fgets(buffer, 200, f) != NULL) {
+		char key[100];
+		char value[100];
+		
+		sscanf(buffer, "%s : %s\n", key, value);
+		commitSet(c, key, value);
+		
+	}
+	
+	free(buffer);
+	fclose(f);
+	
+	return c;
+}
+
 
