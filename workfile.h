@@ -1,7 +1,7 @@
 #ifndef WORKFILE
 #define WORKFILE
 
-#define SIZE_TREE 3
+#define SIZE_TREE 100
 
 typedef struct {
 	char* name;

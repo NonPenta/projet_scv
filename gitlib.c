@@ -84,8 +84,8 @@ int getChmod(const char* path) {
 }
 
 char* concat_paths(char* p1, char* p2) {
-	char* res = malloc(strlen(p1) + strlen(p2) + 1);
-
+	char* res = malloc(strlen(p1) + strlen(p2) + 2);
+	if (res == NULL) { printf("Unable to allocate memory (for god knows what reason)"); return NULL; }
 	sprintf(res, "%s/%s", p1, p2);
 	return res;
 }
