@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "workfile.h"
 #include "hashlib.h"
+#include "gitlib.h"
 
 WorkFile* createWorkFile(char* name) {
 	WorkFile* wf = (WorkFile*) malloc(sizeof(WorkFile));
@@ -80,10 +81,11 @@ int appendWorkTree(WorkTree* wt, char* name, char* hash, int mode){
 }
 
 char* wtts(WorkTree* wt) {
-	char* wtts = (char*) malloc(wt->n * 2006 * sizeof(char));
+	char* wtts = (char*) malloc(1 + wt->n * 2006 * sizeof(char));
 	for(int i = 0; i < wt->n; i++) {
 		char* temp = wfts(wt->tab + i);
 		strcat(wtts, temp);
+		free(temp);
 	}
 	
 	return wtts;
@@ -101,7 +103,8 @@ WorkTree* stwt(char* ch) {;
 		appendWorkTree(wt, name, hash, mode);
 		ch = strcpy(ch, ch + strlen(buffer) + 1);
 		sscanf(ch, "%[^\n]", buffer);
-		}
+	}
+	free(buffer);
 	return wt;
 	
 }
@@ -125,6 +128,7 @@ WorkTree* ftwt(char* file) {
 	FILE* ftree = fopen(file, "r");
 	if (!ftree) {
 		printf("Erreur lors de l'ouverture du fichier %s.\n", file);
+		free(wt);
 		return NULL;
 	}
 	
@@ -141,8 +145,41 @@ WorkTree* ftwt(char* file) {
 		
 	}
 	
+	free(buffer);
 	fclose(ftree);
 	
 	return wt;
 }
 
+char* blobWorkTree(WorkTree* wt) {
+	char fname[14] = "/tmp/wtXXXXXX";
+	mkstemp(fname);
+	wttf(wt, fname);
+	char* hash = sha256file(fname);
+	char* wtbf = hashToFile(hash);
+	strcat(wtbf, ".t");
+	cp(wtbf, fname);
+	return hash;
+}
+
+char* saveWorkTree(WorkTree* wt, char* path) {
+	for (int i = 0; i < wt->n; i++) {
+		char* absPath = concat_paths(path, wt->tab[i].name);
+		if (isFile(absPath)) {
+			blobFile(absPath);
+			wt->tab[i].hash = sha256file(absPath);
+			wt->tab[i].mode = getChmod(absPath);
+		} else {
+			WorkTree* nwt = initWorkTree();
+			List* l = listdir(absPath);
+			for (Cell* c_p = *l; c_p != NULL; c_p = c_p->next) {
+				if (c_p->data[0] != '.') {
+					appendWorkTree(nwt, c_p->data, NULL, 0);
+				}
+			}
+			wt->tab[i].hash = saveWorkTree(nwt, absPath);
+			wt->tab[i].mode = getChmod(absPath);
+		}
+	}
+	return blobWorkTree(wt);
+}
