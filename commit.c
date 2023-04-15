@@ -60,4 +60,24 @@ void commitSet(Commit* c, char* key, char* value){
 	c->n++;
 }
 
+Commit* createCommit(char* hash){
+	Commit* c = initCommit();
+	commitSet(c, "tree", hash);
+	return c;
+}
+
+char* commitGet(Commit* c, char* key){
+	int p = (int) (djb2(key) % c->size);
+	int recherche = 0;
+	while (c->T[p] != NULL && recherche < c->size) {
+		if (strcmp(c->T[p]->key, key) == 0) {
+			return c->T[p]->value;
+		}
+		p = (p+1)%c->size;
+		recherche++;
+	}
+	
+	return NULL;
+}
+
 

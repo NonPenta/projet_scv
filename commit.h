@@ -21,5 +21,8 @@ void freeKeyVal(kvp* kv);
 char* kvts(kvp* kv);
 kvp* stkv(char* str);
 Commit* initCommit();
+void commitSet(Commit* c, char* key, char* value);
+Commit* createCommit(char* hash);
+char* commitGet(Commit* c, char* key);
 
 #endif
