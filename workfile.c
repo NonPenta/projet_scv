@@ -171,11 +171,14 @@ char* blobWorkTree(WorkTree* wt) {
 char* saveWorkTree(WorkTree* wt, char* path) {
 	for (int i = 0; i < wt->n; i++) {
 		char* absPath = concat_paths(path, wt->tab[i].name);
+		printf("%s : isfile -> %d\n", absPath, isFile(absPath));
 		if (isFile(absPath)) {
+			printf("%d", isFile(absPath));
 			blobFile(absPath);
 			wt->tab[i].hash = sha256file(absPath);
 			wt->tab[i].mode = getChmod(absPath);
 		} else {
+			printf("nwt side : %s", absPath);
 			WorkTree* nwt = initWorkTree();
 			List* l = listdir(absPath);
 			for (Cell* c_p = *l; c_p != NULL; c_p = c_p->next) {

@@ -24,23 +24,8 @@ List* listdir(char* root_dir) {
 }
 
 int file_exists(char* file) {
-	FILE *pwd;
-	pwd = popen("pwd", "r");
-	char dir[128];
-	fscanf(pwd, "%s\n", dir);
-	pclose(pwd);
-
-	List* l = listdir(dir);
-
-	Cell* c = *l;
-
-	while (c) {
-		if (strcmp(file, c->data) == 0) return 1;
-		c = c->next;
-	}
-
-	freeList(l);
-	return 0;
+	struct stat buffer;
+	return (stat(file, &buffer) == 0);
 }
 
 void cp(char* to, char* from) {
@@ -56,21 +41,19 @@ void cp(char* to, char* from) {
 }
 
 void blobFile(char* file) {
-	if (file_exists(file)) {
-		char* hash = sha256file(file);
+	char* hash = sha256file(file);
 
-		char* dir = strdup(hash); dir[2] = '\0';
-		char* path = hashToPath(hash);
+	char* dir = strdup(hash); dir[2] = '\0';
+	char* path = hashToPath(hash);
 
-		if (!file_exists(dir)) {
-			char command[9];
-			sprintf(command, "mkdir %c%c", path[0], path[1]);
-			system(command);
-		}
-
-		free(dir);
-		cp(path, file);
+	if (!file_exists(dir)) {
+		char command[9];
+		sprintf(command, "mkdir %c%c", path[0], path[1]);
+		system(command);
 	}
+
+	free(dir);
+	cp(path, file);
 }
 
 int getChmod(const char* path) {
