@@ -3,6 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 #include "hashlib.h"
+#include "gitlib.h"
 
 int hashFile(char *source, char *dest) {
   char command[19 + strlen(source) + strlen(dest)];
@@ -35,4 +36,15 @@ char* hashToPath(char* hash) {
 	char* path = malloc(65 * sizeof(char));
 	sprintf(path, "%c%c/%s", hash[0], hash[1], hash+2);
 	return path;
+}
+
+char* hashToFile(char* hash) {
+	char* dir = strdup(hash); dir[2] = '\0';
+	if (!file_exists(dir)) {
+			char command[9];
+			sprintf(command, "mkdir %s", dir);
+			system(command);
+	}
+	free(dir);
+	return hashToPath(hash);
 }
