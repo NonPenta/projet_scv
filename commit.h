@@ -24,5 +24,7 @@ Commit* initCommit();
 void commitSet(Commit* c, char* key, char* value);
 Commit* createCommit(char* hash);
 char* commitGet(Commit* c, char* key);
+char* cts(Commit* c);
+Commit* stc(char* str);
 
 #endif

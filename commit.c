@@ -20,8 +20,8 @@ void freeKeyVal(kvp* kv) {
 }
 
 char* kvts(kvp* kv) {
-	char* skv = (char*) malloc((strlen(kv->key) + strlen(kv->value) + 1 + 1) * sizeof(char));
-	sprintf(skv, "%s : %s", kv->key, kv->value);
+	char* skv = (char*) malloc((strlen(kv->key) + strlen(kv->value) + 1 + 1 + 1) * sizeof(char));
+	sprintf(skv, "%s : %s\n", kv->key, kv->value);
 	return skv;
 }
 
@@ -78,6 +78,33 @@ char* commitGet(Commit* c, char* key){
 	}
 	
 	return NULL;
+}
+
+char* cts(Commit* c) {
+	char* str = malloc(sizeof(char) * 100 * c->n);
+	for (int i = 0; i < c-> size; i++) {
+		if (c->T[i] != NULL) {
+			strcat(str, kvts(c->T[i]));
+		}
+	}
+	return str;
+}
+
+Commit* stc(char* str) {;
+	Commit* c = initCommit();
+	char* buffer = (char*) malloc(200 * sizeof(char));
+	sscanf(str, "%[^\n]", buffer);
+	while(strchr(str, '\n')) {
+		char key[100];
+		char value[100];
+		sscanf(str, "%s : %s\n", key, value);
+		commitSet(c, key, value);
+		str = strcpy(str, str + strlen(buffer) + 1);
+		sscanf(str, "%[^\n]", buffer);
+	}
+	free(buffer);
+	return c;
+	
 }
 
 
