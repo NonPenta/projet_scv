@@ -48,3 +48,15 @@ char* hashToFile(char* hash) {
 	free(dir);
 	return hashToPath(hash);
 }
+
+char* djb2(char* str) {
+  unsigned long hash = 5381;
+  int c;
+  while (c = *str++) {
+    hash = ((hash << 5) + hash) + c;
+  }
+  
+  char* shash = (char*) malloc(sizeof(char) * (10 + 1)); //taille max d'un unsigned long = 4 294 967 295
+  
+  return ultoa(hash, shash, HEX);
+}
