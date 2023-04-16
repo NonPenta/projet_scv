@@ -29,5 +29,6 @@ WorkTree* ftwt(char* file);
 
 char* blobWorkTree(WorkTree* wt);
 char* saveWorkTree(WorkTree* wt, char* path);
+void restoreWorkTree(WorkTree* wt, char* path);
 
 #endif

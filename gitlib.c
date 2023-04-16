@@ -69,6 +69,12 @@ int getChmod(const char* path) {
 				(ret.st_mode &S_IROTH)|(ret.st_mode &S_IWOTH)|(ret.st_mode &S_IXOTH);/* other*/
 }
 
+void setMode(int mode, char* path) {
+	char buff[100];
+	sprintf(buff, "chmod %d %s", mode, path) ;
+	system(buff);
+}
+
 char* concat_paths(char* p1, char* p2) {
 	char* res = malloc(strlen(p1) + strlen(p2) + 2);
 	if (res == NULL) { printf("Unable to allocate memory (for god knows what reason)"); return NULL; }
