@@ -10,7 +10,7 @@ WorkFile* createWorkFile(char* name) {
 	wf->name = strdup(name);
 	wf->hash = NULL;
 	wf->mode = 0;
-	
+
 	return wf;
 }
 
@@ -23,7 +23,6 @@ char* wfts(WorkFile* wf) {
 	sprintf(wfts, "%s\t%s\t%d\n", wf->name, wf->hash, wf->mode);
 	free(hash);
 	return wfts;
-	
 }
 
 WorkFile* stwf(char* ch) {
@@ -191,4 +190,28 @@ char* saveWorkTree(WorkTree* wt, char* path) {
 		}
 	}
 	return blobWorkTree(wt);
+}
+
+int isWorkTree(char* path) {
+	char* tmp_path = malloc(strlen(path) + 2);
+	strcpy(tmp_path, path);
+	return file_exists(strcat(tmp_path, ".t")) ? 1 : (file_exists(path) ? 0 : -1);
+}
+
+void restoreWorkTree(WorkTree* wt, char* path) {
+	for (int i = 0; i < wt->n; i++) {
+		char* dstPath = concat_paths(path, wt->tab[i].name);
+		char* srcPath = hashToPath(wt->tab[i].hash);
+		if (isWorkTree(srcPath) == 0) {
+			cp(dstPath, srcPath);
+			setMode(getChmod(srcPath), dstPath);
+		} else if (isWorkTree(srcPath) == 1) {
+			srcPath = realloc(srcPath, strlen(srcPath) + 2);
+			strcat(srcPath, ".t");
+			WorkTree* nwt = ftwt(srcPath);
+			restoreWorkTree(nwt, srcPath);
+			setMode(getChmod(srcPath), dstPath);
+			free(nwt);
+		}
+	}
 }
