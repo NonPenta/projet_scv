@@ -3,6 +3,8 @@
 
 #define SIZE_TREE 100
 
+#include "clist.h"
+
 typedef struct {
 	char* name;
 	char* hash;
@@ -31,4 +33,5 @@ char* blobWorkTree(WorkTree* wt);
 char* saveWorkTree(WorkTree* wt, char* path);
 void restoreWorkTree(WorkTree* wt, char* path);
 
+WorkTree* mergeWorkTrees(WorkTree* wt1, WorkTree* wt2, List** conflicts);
 #endif

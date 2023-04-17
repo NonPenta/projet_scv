@@ -4,6 +4,7 @@
 #include "workfile.h"
 #include "hashlib.h"
 #include "gitlib.h"
+#include "clist.h"
 
 WorkFile* createWorkFile(char* name) {
 	WorkFile* wf = (WorkFile*) malloc(sizeof(WorkFile));
@@ -214,4 +215,25 @@ void restoreWorkTree(WorkTree* wt, char* path) {
 			free(nwt);
 		}
 	}
+}
+
+WorkTree* mergeWorkTrees(WorkTree* wt1, WorkTree* wt2, List** conflicts) {
+	*conflicts = initList();
+	WorkTree* wt3 = initWorkTree();
+	for(int i =0; i < wt1->n; i++) {
+		if(inWorkTree(wt2, wt1->tab[i].name) > -1){
+			Cell* c = buildCell(wt1->tab[1].name);
+			insertFirst(*conflicts, c);
+		} else {
+			appendWorkTree(wt3, wt1->tab[i].name, wt1->tab[i].hash, wt1->tab[i].mode);
+		}
+	}
+	
+	for(int i = 0; i < wt2->n; i++) {
+		if(inWorkTree(wt1, wt2->tab[i].name) == -1){
+			appendWorkTree(wt3, wt2->tab[i].name, wt2->tab[i].hash, wt2->tab[i].mode);
+		}
+	}
+	
+	return wt3;
 }
