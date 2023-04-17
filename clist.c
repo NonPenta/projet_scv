@@ -106,3 +106,17 @@ List* ftol(char* path) {
 
 	return l;
 }
+
+List* filterList(List* L, char* pattern) {
+	List* filtre = initList();
+	Cell* cell = *L;
+	while(cell != NULL) {
+		char* c = strdup(cell->data);
+		c[strlen(pattern)] = '\0';
+		if(strcmp(c, pattern) == 0) {
+			insertFirst(filtre, buildCell(cell->data));
+		}
+		free(c);
+	}
+	return filtre;
+}

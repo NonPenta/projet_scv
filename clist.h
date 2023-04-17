@@ -24,4 +24,6 @@ List* stol(char* s);
 void ltof(List* l, char* path);
 List* ftol(char* path);
 
+List* filterList(List* L, char* pattern);
+
 #endif
