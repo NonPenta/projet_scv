@@ -4,6 +4,7 @@
 #include "commit.h"
 #include "hashlib.h"
 #include "gitlib.h"
+#include "workfile.h"
 
 kvp* createKeyVal(char* key, char* val) {
 	kvp* kv = (kvp*) malloc(sizeof(kvp));
@@ -160,6 +161,14 @@ char* blobCommit(Commit* c) {
 	strcat(rm, fname);
 	system(rm);
 	return hash;
+}
+
+void restoreCommit(char* hash_commit) {
+	char* cpath = hashToPathCommit(hash_commit);
+	Commit* c = ftc(cpath);
+	char* thash = strcat(hashToPath(commitGet(c, "tree")), ".t");
+	WorkTree* wt = ftwt(thash);
+	restoreWorkTree(wt, ".");
 }
 
 

@@ -29,5 +29,6 @@ Commit* stc(char* str);
 void ctf(Commit* c, char* file);
 Commit* ftc(char* file);
 char* blobCommit(Commit* c);
+void restoreCommit(char* hash_commit);
 
 #endif
