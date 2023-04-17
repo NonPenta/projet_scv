@@ -32,6 +32,9 @@ reflib.o: reflib.c
 
 myGit.o: myGit.c
 	gcc $(CFLAGS) -c myGit.c
+	
+branchlib.o: branchlib.c
+	gcc $(CFLAGS) -c branchlib.c
 
 clean:
 	rm -f *.o *~ $(PROGRAMS)
