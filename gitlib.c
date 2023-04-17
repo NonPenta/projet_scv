@@ -161,3 +161,13 @@ void myGitCommit(char* branch_name, char* message) {
 	createUpdateRef(branch_name, hashc);
 	createUpdateRef("HEAD", hashc);
 }
+
+void myGitCheckoutBranch(char* branch) {
+	FILE* f = fopen(".current_branch", "w");
+	fprintf(f, "%s", branch);
+	fclose(f);
+	
+	char* hash_commit = getRef(branch);
+	createUpdateRef("HEAD", hash_commit);
+	restoreCommit(hash_commit);
+}
