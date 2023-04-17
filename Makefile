@@ -6,7 +6,7 @@ all: $(EXEC)
 main: gitlib.o main.o hashlib.o clist.o workfile.o commit.o
 	gcc -o $@ $(CFLAGS) $^
 	
-myGit: clist.o reflib.o gitlib.o workfile.o hashlib.o commit.o myGit.o
+myGit: clist.o reflib.o gitlib.o workfile.o hashlib.o commit.o myGit.o branchlib.o
 	gcc -o $@ $(CFLAGS) $^
 	
 clist.o: clist.c
