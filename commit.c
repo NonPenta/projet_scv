@@ -43,6 +43,8 @@ Commit* initCommit() {
 	
 	c->n = 0;
 	
+	printf("Commit initialisé.\n");
+	
 	return c;
 }
 
@@ -64,6 +66,7 @@ void commitSet(Commit* c, char* key, char* value){
 Commit* createCommit(char* hash){
 	Commit* c = initCommit();
 	commitSet(c, "tree", hash);
+	printf("Commit créé.\n");
 	return c;
 }
 

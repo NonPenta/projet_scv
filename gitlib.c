@@ -114,18 +114,28 @@ void myGitAdd(char* file_or_folder) {
 }
 
 void myGitCommit(char* branch_name, char* message) {
+	printf(".\n");
 	if(!file_exists(".refs")) {
 		printf("Erreur: Références non initialisées.\n");
 		return;
 	}
 	
-	char* file_name = ".refs/";
-	strcat(file_name, branch_name);
+	printf(".\n");
+	
+	char* file_name = malloc(1000 * sizeof(char));
+	
+	printf(".\n");
+	
+	sprintf(file_name, ".refs/%s", branch_name);
+	
+	printf(".\n");
 	
 	if(!file_exists(file_name)) {
 		printf("Erreur: Branche inexistante.\n");
 		return;
 	}
+	
+	printf(".\n");
 	
 	char* branchref = getRef(branch_name);
 	char* headref = getRef("HEAD");

@@ -19,12 +19,17 @@ int main(int argc, char** argv) {
 		   
 		printf("Références :\n");
 		List* L = listdir(".refs");
-		for (Cell* ptr = *L; ptr != NULL; ptr = ptr->next) {
-			if (ptr->data[0] == '.') {
+		Cell* cell = *L;
+		while(cell != NULL) {
+			
+			if (cell->data[0] == '.') {
+				cell = cell->next;
 				continue;
 			}
-			char* reference = getRef(ptr->data);
-			printf("%s \t %s\n", ptr->data, reference);
+			char* reference = getRef(cell->data);
+			printf("%s \t %s\n", cell->data, reference);
+			
+			cell = cell->next;
 		}
 	}
 	
@@ -44,7 +49,7 @@ int main(int argc, char** argv) {
 		   
 	if(strcmp(argv[1], "list-add") == 0) {
 		if(!file_exists(".add")) {
-			printf("Aucun fichier dans la zone de préparation");
+			printf("Aucun fichier dans la zone de préparation.\n");
 			return 0;
 		}
 		
@@ -58,7 +63,7 @@ int main(int argc, char** argv) {
 	}
 		   
 	if(strcmp(argv[1], "commit") == 0) {
-		if(strcmp(argv[3], "-m") == 0) {
+		if(argc == 4 && strcmp(argv[3], "-m") == 0) {
 			myGitCommit(argv[2], argv[4]);
 		} else {
 			myGitCommit(argv[2], NULL);
