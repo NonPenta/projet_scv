@@ -11,6 +11,7 @@
 #include "reflib.h"
 #include "workfile.h"
 #include "commit.h"
+#include "branchlib.h"
 
 List* listdir(char* root_dir) {
 	List* l = initList();
@@ -171,4 +172,24 @@ void myGitCheckoutBranch(char* branch) {
 	char* hash_commit = getRef(branch);
 	createUpdateRef("HEAD", hash_commit);
 	restoreCommit(hash_commit);
+}
+
+void myGitCheckoutCommit(char* pattern){
+	List* L = getAllCommits();
+	List* filtred_list= filterList(L, pattern);
+	if(listSize(filtred_list) == 1) {
+		char* chash = (listGet(filtred_list, 0))->data;
+		restoreCommit(chash);
+	} else {
+		if(listSize(filtred_list) == 0) {
+			printf("Erreur: Aucun motif correspondant trouvé.\n");
+		} else {
+			printf("Plusieurs motifs conrrespondants trouvés:\n");
+			Cell* cell = *filtred_list;
+			while(cell != NULL) {
+				printf(" - %s\n", cell->data);
+			}
+		}
+	}
+	
 }

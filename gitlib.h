@@ -15,5 +15,6 @@ void createFile(char* file);
 void myGitAdd(char* file_or_folder);
 void myGitCommit(char* branch_name, char* message);
 void myGitCheckoutBranch(char* branch);
+void myGitCheckoutCommit(char* pattern);
 
 #endif

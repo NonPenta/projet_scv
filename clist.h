@@ -26,4 +26,6 @@ List* ftol(char* path);
 
 List* filterList(List* L, char* pattern);
 
+int listSize(List* L);
+
 #endif

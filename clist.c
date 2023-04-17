@@ -120,3 +120,13 @@ List* filterList(List* L, char* pattern) {
 	}
 	return filtre;
 }
+
+int listSize(List* list) {
+	int count = 0;
+	Cell* cell = *list;
+	while(cell != NULL) {
+		count++;
+		cell = cell->next;
+	}
+	return count;
+}
