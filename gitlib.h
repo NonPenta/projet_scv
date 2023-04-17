@@ -11,5 +11,9 @@ int getChmod(const char* path);
 void setMode(int mode, char* path);
 char* concat_paths(char* p1, char* p2);
 int isFile(const char* path);
+void createFile(char* file);
+void myGitAdd(char* file_or_folder);
+void myGitCommit(char* branch_name, char* message);
+void myGitCheckoutBranch(char* branch);
 
 #endif

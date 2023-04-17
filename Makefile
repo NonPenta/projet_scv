@@ -1,9 +1,12 @@
 CFLAGS = -Wall -Wextra -g
-EXEC = main
+EXEC = main, myGit
 
 all: $(EXEC)
 
 main: gitlib.o main.o hashlib.o clist.o workfile.o commit.o
+	gcc -o $@ $(CFLAGS) $^
+	
+myGit: clist.o reflib.o gitlib.o workfile.o hashlib.o commit.o myGit.o
 	gcc -o $@ $(CFLAGS) $^
 	
 clist.o: clist.c
@@ -26,6 +29,12 @@ commit.o: commit.c
 	
 reflib.o: reflib.c
 	gcc $(CFLAGS) -c reflib.c
+
+myGit.o: myGit.c
+	gcc $(CFLAGS) -c myGit.c
+	
+branchlib.o: branchlib.c
+	gcc $(CFLAGS) -c branchlib.c
 
 clean:
 	rm -f *.o *~ $(PROGRAMS)

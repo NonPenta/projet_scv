@@ -19,8 +19,8 @@ void createUpdateRef(char* ref_name, char* hash) {
 }
 
 void deleteRef(char* ref_name){
-	char* name_file = ".refs/";
-	strcat(name_file, ref_name);
+	char* name_file = malloc((strlen(ref_name) + 7) * sizeof(char));
+	sprintf(name_file, ".refs/%s", ref_name);
 	if (!file_exists(name_file)) {
 		printf("Erreur: référence %s inconnue.\n", ref_name);
 	} else {
@@ -32,8 +32,8 @@ void deleteRef(char* ref_name){
 }
 
 char* getRef(char* refname) {
-	char* name_file = ".refs/";
-	strcat(name_file, refname);
+	char* name_file = malloc((strlen(refname) + 7) * sizeof(char));
+	sprintf(name_file, ".refs/%s", refname);
 	if (!file_exists(name_file)) {
 		printf("Erreur: la référence %s n'existe pas.\n", refname);
 		return NULL;
