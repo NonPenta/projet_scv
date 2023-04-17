@@ -12,8 +12,8 @@ int main(int argc, char** argv) {
 	}
 	
 	if(strcmp(argv[1], "list-refs") == 0) {
-		if(!file_exists(".refs") {
-			printf("Aucune référence présente");
+		if(!file_exists(".refs")) {
+			printf("Aucune référence présente.\n");
 			return 0;
 		}
 		   
@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 				continue;
 			}
 			char* reference = getRef(ptr->data);
-			printf("%s \t %s\n", ptr->data, content);
+			printf("%s \t %s\n", ptr->data, reference);
 		}
 	}
 	
@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 	}
 		   
 	if(strcmp(argv[1], "list-add") == 0) {
-		if(!file_exists(".add"); {
+		if(!file_exists(".add")) {
 			printf("Aucun fichier dans la zone de préparation");
 			return 0;
 		}
