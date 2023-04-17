@@ -49,6 +49,12 @@ char* hashToFile(char* hash) {
 	return hashToPath(hash);
 }
 
+char* hashToPathCommit (char* hash) {
+  char* buff = malloc (100*sizeof(char)*100);
+  sprintf(buff, "%s.c", hashToPath(hash));
+  return buff;
+}
+
 unsigned long djb2(char* str) {
   unsigned long hash = 5381;
   int c;
